@@ -1,3 +1,6 @@
+default['pantry']['deploy_environment'] = "test"
+default['pantry']['deploy_key'] = "id_rsa"
 default['pantry']['deploy_path'] = "/home/pantry"
-default['pantry']['repo'] = "git@github.com:QuickBridgeLtd/lakitu.git"
+default['pantry']['repo'] = "git@github.com:QuickbridgeLtd/lakitu.git"
+default['pantry']['group'] = "pantry"
 default['pantry']['user'] = "pantry"

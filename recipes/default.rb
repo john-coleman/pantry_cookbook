@@ -6,24 +6,40 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+include_recipe "git"
+
 directory "#{node['pantry']['deploy_path']}/bin" do
   owner node['pantry']['user']
   mode 755
   recursive true
 end
 
-cookbook_file "#{node['pantry']['deploy_path']}/bin/wrap-ssh4git.sh" do
-  source "wrap-ssh4git.sh"
+template "#{node['pantry']['deploy_path']}/bin/wrap-ssh4git.sh" do
+  source "wrap-ssh4git.sh.erb"
   owner node['pantry']['user']
   mode 00700
+  variables(
+      :deploy_path => node['pantry']['deploy_path'],
+      :deploy_key => node['pantry']['deploy_key']
+  )
 end
 
-deploy "pantry" do
-  repo "git@github.com:QuickBridgeLtd/lakitu.git"
-  user node['pantry']['user']
-  deploy_to "/home/pantry/pantry"
-  action :deploy
+application "pantry" do
+  repository node['pantry']['repo']
+  owner node['pantry']['user']
+  group node['pantry']['group']
+  path node['pantry']['deploy_path']
+  environment_name node['pantry']['deploy_environment']
+  #deploy_key "{#node['pantry']['deploy_path']}/.ssh/#{node['pantry']['deploy_key']}"
   ssh_wrapper "#{node['pantry']['deploy_path']}/bin/wrap-ssh4git.sh"
+
+  rails do
+      database do
+          database "mysql"
+          username "pantry"
+          password "pantry"
+      end
+  end
 end
 
 

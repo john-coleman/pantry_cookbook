@@ -10,19 +10,9 @@ include_recipe "git"
 
 directory "#{node['pantry']['deploy_path']}/bin" do
   owner node['pantry']['user']
-  mode 755
+  mode 0755
   recursive true
 end
-
-#template "#{node['pantry']['deploy_path']}/bin/wrap-ssh4git.sh" do
-#  source "wrap-ssh4git.sh.erb"
-#  owner node['pantry']['user']
-#  mode 00700
-#  variables(
-#      :deploy_path => node['pantry']['deploy_path'],
-#      :deploy_key => node['pantry']['deploy_key']
-#  )
-#end
 
 deploy_user = data_bag_item('users', node['pantry']['user'])
 
@@ -33,15 +23,18 @@ application "pantry" do
   path node['pantry']['deploy_path']
   environment_name node['pantry']['deploy_environment']
   deploy_key deploy_user['ssh_private_key']
-  #ssh_wrapper "#{node['pantry']['deploy_path']}/bin/wrap-ssh4git.sh"
+  packages [ "libxml2-dev", "libxslt1-dev", "libmysqlclient-dev" ]
+  action :force_deploy
 
   rails do
+      gems [ "bundler" ]
       database do
           database "mysql"
           username "pantry"
           password "pantry"
       end
   end
+
 end
 
 

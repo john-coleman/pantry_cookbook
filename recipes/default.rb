@@ -32,14 +32,18 @@ application "pantry" do
     path                app_path
     environment_name    app_env
     deploy_key          deploy_user_item['ssh_private_key']
-    packages            [ "libxml2-dev", "libxslt1-dev", "libmysqlclient-dev" ]
+    packages            [ "libxml2-dev",
+                        "libxslt1-dev",
+                        "libmysqlclient-dev",
+                        "libcurl4-openssl-dev",
+                        "libpcre3-dev" ]
     action              :force_deploy
     #restart_command "bundle exec rails server -e #{node['pantry']['deploy_environment']}"
 
     rails do
-        gems [ "bundler", "unicorn" ]
+        gems [ "bundler" ]
         database_master_role node['pantry']['database_master_role']
-        restart_command "cd #{app_path}/current; bundle exec rails server -e #{app_env} -d -p #{app_port} -P #{app_pid}"
+        #restart_command "cd #{app_path}/current; bundle exec rails server -e #{app_env} -d -p #{app_port} -P #{app_pid}"
         database do
             adapter db_adapter
             database db_database

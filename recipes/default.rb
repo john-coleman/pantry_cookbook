@@ -6,8 +6,10 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+
 include_recipe "git"
 include_recipe "runit"
+include_recipe "passenger_apache2"
 
 # We pull the ssh private key from the specified users data bag item
 deploy_user_item = data_bag_item('users', node['pantry']['user'])
@@ -40,9 +42,6 @@ mysql_database db_database do
     action :create
 end
 
-# Fallback to attribute if chef solo, otherwise use the database_master_role to return an IP from a chef search
-#database_master = node['pantry']['database_host'] 
-
 application "pantry" do
     repository node['pantry']['repo']
     owner node['pantry']['user']
@@ -56,7 +55,6 @@ application "pantry" do
     rails do
         gems [ "bundler", "passenger", "unicorn" ]
         database_master_role node['pantry']['database_master_role']
-        #restart_command "cd #{app_path}/current; bundle exec rails server -e #{app_env} -d -p #{app_port} -P #{app_pid}"
         database do
             adapter db_adapter
             database db_database
@@ -70,8 +68,8 @@ application "pantry" do
     #end
     
     passenger_apache2 do
-        server_aliases [ "pantry.example.com", "pantry" ]
-        webapp_template "pantry_apache.conf.erb"
+        server_aliases node['pantry']['server_aliases']
+        webapp_template node['pantry']['webapp_template']
     end
 end
 

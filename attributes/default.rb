@@ -10,3 +10,5 @@ default['pantry']['deploy_path'] = "/home/pantry/pantry"
 default['pantry']['repo'] = "git@github.com:wongatech/pantry.git"
 default['pantry']['group'] = "pantry"
 default['pantry']['user'] = "pantry"
+default['pantry']['server_aliases'] = [ "pantry" ]
+default['pantry']['webapp_template'] = "pantry_apache.conf.erb"

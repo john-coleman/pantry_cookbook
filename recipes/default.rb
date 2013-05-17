@@ -29,9 +29,10 @@ mysql_connection_info = {:host => "localhost",
 mysql_database_user db_username do
     connection mysql_connection_info
     password db_password
+    host '%'
     database_name db_database
     privileges [:all]
-    action :create
+    action :grant
 end
 
 mysql_database db_database do

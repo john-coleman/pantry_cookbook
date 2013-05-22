@@ -2,6 +2,16 @@
 
 This file is used to list changes made in each version of pantry.
 
+## 0.1.2:
+
+* Pantry revision can be specified in a data bag with fallback to an attribute
+* Removed some redundant attributes (deploy_port, deploy_pid)
+* Renamed some attributes (deploy_revision -> app_revision etc.)
+
+## 0.1.1:
+
+* Apache2 and Passenger app server instead of Rails Webrick. Nginx + Unicorn support to be added in future releases.
+
 ## 0.1.0:
 
 * Initial release of pantry

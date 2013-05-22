@@ -13,10 +13,29 @@ include_recipe "passenger_apache2"
 
 # We pull the ssh private key from the specified users data bag item
 deploy_user_item = data_bag_item('users', node['pantry']['user'])
-app_env = node['pantry']['deploy_environment']
-app_path = node['pantry']['deploy_path']
-app_port = node['pantry']['deploy_port']
-app_pid = "#{node['pantry']['deploy_path']}/pantry.pid"
+app_env = node['pantry']['app_environment']
+app_path = node['pantry']['app_path']
+app_port = node['pantry']['app_port']
+
+# Get Pantry revision from specified data bag item if it exists or fall back to attribute
+begin
+    app_revision_item = data_bag_item(node['pantry']['app_data_bag'], node['pantry']['app_data_bag_item'])
+    #(app_revision_item['app_revision'].nil?) ? (app_revision = node['pantry']['app_revision']) : (app_revision = app_revision_item['app_revision'])
+    if app_revision_item['app_revision'].nil?
+        Chef::Log.warn "Data Bag #{node['pantry']['app_data_bag']} Item #{node['pantry']['app_data_bag_item']} empty, falling back to attribute"
+        app_revision = node['pantry']['app_revision']
+    else
+        app_revision = app_revision_item['app_revision']
+    end
+rescue
+    Chef::Log.warn "Data Bag #{node['pantry']['app_data_bag']} does not exist, falling back to attribute"
+    app_revision = node['pantry']['app_revision']
+end
+
+Chef::Log.info "#########################################"
+Chef::Log.info "DEPLOYING PANTRY REVISION #{app_revision}"
+Chef::Log.info "#########################################"
+
 # rails database sub-resource can't access node attributes directly.
 db_adapter = node['pantry']['database_adapter']
 db_database = node['pantry']['database_name']
@@ -46,6 +65,7 @@ application "pantry" do
     repository node['pantry']['repo']
     owner node['pantry']['user']
     group node['pantry']['group']
+    revision app_revision unless app_revision.nil?
     path app_path
     environment_name app_env
     deploy_key deploy_user_item['ssh_private_key']
@@ -73,4 +93,7 @@ application "pantry" do
     end
 end
 
+#Chef::Log.info "#########################################"
+#Chef::Log.info "DEPLOYMENT COMPLETE PANTRY REVISION #{app_revision}"
+#Chef::Log.info "#########################################"
 

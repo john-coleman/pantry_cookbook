@@ -1,0 +1,6 @@
+node_name "<%= @client_name %>"
+client_key "~/.chef/<%= @client_name %>.pem"
+chef_server_url "<%= @chef_server %>"
+knife[:aws_access_key_id] = "#{ENV['AWS_ACCESS_KEY_ID']}"
+knife[:aws_secret_access_key] = "#{ENV['AWS_SECRET_ACCESS_KEY']}"
+knife[:host_key_verify] = false

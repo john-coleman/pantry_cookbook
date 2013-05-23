@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of pantry.
 
+## 0.1.3
+
+* Added Chef API credentials from a data bag item with fallback to attributes
+
 ## 0.1.2:
 
 * Pantry revision can be specified in a data bag with fallback to an attribute

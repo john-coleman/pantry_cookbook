@@ -17,19 +17,32 @@ app_env = node['pantry']['app_environment']
 app_path = node['pantry']['app_path']
 app_port = node['pantry']['app_port']
 
-# Get Pantry revision from specified data bag item if it exists or fall back to attribute
+# Get Pantry attributes from specified data bag item if it exists or fall back to attribute
 begin
-    app_revision_item = data_bag_item(node['pantry']['app_data_bag'], node['pantry']['app_data_bag_item'])
-    #(app_revision_item['app_revision'].nil?) ? (app_revision = node['pantry']['app_revision']) : (app_revision = app_revision_item['app_revision'])
-    if app_revision_item['app_revision'].nil?
+    app_data_bag_item = data_bag_item(node['pantry']['app_data_bag'], node['pantry']['app_data_bag_item'])
+    if app_data_bag_item['app_revision'].nil?
         Chef::Log.warn "Data Bag #{node['pantry']['app_data_bag']} Item #{node['pantry']['app_data_bag_item']} empty, falling back to attribute"
         app_revision = node['pantry']['app_revision']
     else
-        app_revision = app_revision_item['app_revision']
+        app_revision = app_data_bag_item['app_revision']
     end
 rescue
     Chef::Log.warn "Data Bag #{node['pantry']['app_data_bag']} does not exist, falling back to attribute"
     app_revision = node['pantry']['app_revision']
+end
+
+# Get Pantry Chef credentials from specified data bag item if it exists of fall back to attributes
+begin
+    chef_data_bag_item = data_bag_item(node['pantry']['chef_data_bag'], node['pantry']['chef_data_bag_item'])
+    if chef_data_bag_item['chef'].nil?
+        Chef::Log.warn "Data Bag #{node['pantry']['chef_data_bag']} Item #{node['pantry']['chef_data_bag_item']} empty, falling back to attribute"
+        knife_data = node['pantry']['chef']
+    else
+        knife_data = chef_data_bag_item['chef']
+    end
+rescue
+    Chef::Log.warn "Data Bag #{node['pantry']['app_data_bag']} does not exist, falling back to attribute"
+    knife_data = node['pantry']['chef']
 end
 
 Chef::Log.info "#########################################"
@@ -58,6 +71,35 @@ end
 
 mysql_database db_database do
     connection mysql_connection_info
+    action :create
+end
+
+# Setup the knife .chef config directory
+directory "#{deploy_user_item['home']}/.chef" do
+    owner node['pantry']['user']
+    group node['pantry']['group']
+    mode 0750
+end
+
+# Set up the knife client key
+file "#{deploy_user_item['home']}/.chef/#{knife_data['client_name']}.pem" do
+    owner node['pantry']['user']
+    group node['pantry']['group']
+    mode 0640
+    content knife_data['client_key']
+    action :create
+end
+
+# Set up the knife client config
+template "#{deploy_user_item['home']}/.chef/knife.rb" do
+    source "knife.rb.erb"
+    owner node['pantry']['user']
+    group node['pantry']['group']
+    mode 0640
+    variables(
+        :chef_server => knife_data['chef_server'],
+        :client_name => knife_data['client_name']
+    )
     action :create
 end
 

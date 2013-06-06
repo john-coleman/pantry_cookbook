@@ -1,6 +1,7 @@
 default['pantry']['app_data_bag'] = "pantry"
 default['pantry']['app_data_bag_item'] = "pantry"
 default['pantry']['app_environment'] = "test"
+default['pantry']['app_migrate'] = true
 default['pantry']['app_path'] = "/home/pantry/pantry"
 default['pantry']['app_revision'] = "HEAD"
 
@@ -15,6 +16,7 @@ default['pantry']['database_master_role'] = "wonga_linux_pantry_server"
 default['pantry']['database_name'] = "pantry"
 default['pantry']['database_username'] = "pantry"
 default['pantry']['database_password'] = "pantry"
+
 
 default['pantry']['repo'] = "git@github.com:wongatech/pantry.git"
 default['pantry']['group'] = "pantry"

@@ -110,6 +110,7 @@ application "pantry" do
     revision app_revision unless app_revision.nil?
     path app_path
     environment_name app_env
+    migrate node['pantry']['app_migrate']
     deploy_key deploy_user_item['ssh_private_key']
     packages [ "libxml2-dev", "libxslt1-dev", "libmysqlclient-dev", "libcurl4-openssl-dev", "libpcre3-dev" ]
     action :force_deploy

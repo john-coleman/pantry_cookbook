@@ -90,6 +90,15 @@ file "#{deploy_user_item['home']}/.chef/#{knife_data['client_name']}.pem" do
     action :create
 end
 
+# Set up the knife client key
+file "#{deploy_user_item['home']}/.chef/aws-ssh-keypair.pem" do
+    owner node['pantry']['user']
+    group node['pantry']['group']
+    mode 0640
+    content knife_data['aws_key']
+    action :create
+end
+
 # Set up the knife client config
 template "#{deploy_user_item['home']}/.chef/knife.rb" do
     source "knife.rb.erb"

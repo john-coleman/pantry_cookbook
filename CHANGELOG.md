@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of pantry.
 
+## 0.1.4
+
+* Adds before_restart callback to restart the delayed_jobs process during a new deployment
+
 ## 0.1.3
 
 * Added Chef API credentials from a data bag item with fallback to attributes

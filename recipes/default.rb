@@ -90,11 +90,11 @@ file "#{deploy_user_item['home']}/.chef/#{knife_data['client_name']}.pem" do
     action :create
 end
 
-# Set up the knife client key
+# Set up the SSH key
 file "#{deploy_user_item['home']}/.chef/aws-ssh-keypair.pem" do
     owner node['pantry']['user']
     group node['pantry']['group']
-    mode 0640
+    mode 0600
     content knife_data['aws_key']
     action :create
 end
@@ -123,7 +123,7 @@ application "pantry" do
     deploy_key deploy_user_item['ssh_private_key']
     packages [ "libxml2-dev", "libxslt1-dev", "libmysqlclient-dev", "libcurl4-openssl-dev", "libpcre3-dev" ]
     action :force_deploy
-
+    
     rails do
         gems [ "bundler", "passenger", "unicorn" ]
         database_master_role node['pantry']['database_master_role']
@@ -135,17 +135,17 @@ application "pantry" do
         end
     end
 
-    #unicorn do
-    #    worker_processes 2
-    #end
-    
+    before_restart do
+        current_release = release_path
+        execute "delayed_job Restart" do
+            command "#{current_release}/script/delayed_job restart"
+            environment ({"RAILS_ENV"=>"#{app_env}"})
+            action :run
+        end
+    end
+
     passenger_apache2 do
         server_aliases node['pantry']['server_aliases']
         webapp_template node['pantry']['webapp_template']
     end
 end
-
-#Chef::Log.info "#########################################"
-#Chef::Log.info "DEPLOYMENT COMPLETE PANTRY REVISION #{app_revision}"
-#Chef::Log.info "#########################################"
-

@@ -23,3 +23,5 @@ default['pantry']['group'] = "pantry"
 default['pantry']['user'] = "pantry"
 default['pantry']['server_aliases'] = [ "pantry" ]
 default['pantry']['webapp_template'] = "pantry_apache.conf.erb"
+
+default['pantry']['nodejs_package'] = "nodejs"

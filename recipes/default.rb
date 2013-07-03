@@ -149,3 +149,5 @@ application "pantry" do
         webapp_template node['pantry']['webapp_template']
     end
 end
+
+package node['pantry']['nodejs_package']

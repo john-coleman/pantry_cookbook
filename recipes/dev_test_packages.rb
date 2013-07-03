@@ -8,3 +8,4 @@
 #
 
 package node['pantry']['qt_4_package']
+package node['pantry']['xvfb_package']

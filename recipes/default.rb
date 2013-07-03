@@ -11,6 +11,8 @@ include_recipe "git"
 include_recipe "runit"
 include_recipe "passenger_apache2"
 
+package node['pantry']['nodejs_package']
+
 # We pull the ssh private key from the specified users data bag item
 deploy_user_item = data_bag_item('users', node['pantry']['user'])
 app_env = node['pantry']['app_environment']
@@ -149,5 +151,3 @@ application "pantry" do
         webapp_template node['pantry']['webapp_template']
     end
 end
-
-package node['pantry']['nodejs_package']

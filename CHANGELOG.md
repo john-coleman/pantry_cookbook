@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of pantry.
 
+## 0.1.5
+
+* Added precompile assets
+* Added nodejs
+* Added webkit & xvfb for tests
+
 ## 0.1.4
 
 * Adds before_restart callback to restart the delayed_jobs process during a new deployment

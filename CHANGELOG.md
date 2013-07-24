@@ -1,6 +1,10 @@
 # CHANGELOG for pantry
 
-This file is used to list changes made in each version of pantry.
+This file is used to list changes made in each version of pantry cookbook.
+
+## 0.1.6
+
+* Added daemons support based on attribute array of daemon names with a data bag item per daemon to contain configuration parameters and credentials.
 
 ## 0.1.5
 

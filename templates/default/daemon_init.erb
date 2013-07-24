@@ -1,0 +1,16 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          <%= @daemon %>
+# Required-Start:    $local_fs $remote_fs $network $syslog $named
+# Required-Stop:     $local_fs $remote_fs $network $syslog $named
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# X-Interactive:     false
+# Short-Description: start/stop/restart <%= @daemon %> pantry daemon
+# Description:       This script wraps the Pantry Daemon <%= @daemon %>'s daemon.rb
+#                    Each daemon uses Daemons gem which supports stop/start/restart/status
+#                    Can be configured to be restarted by monitor process if crashed
+#                    Chef deploys the daemon and generates this script from template
+### END INIT INFO
+
+su - <%= @user %> -c "cd <%= @daemon_path %>; bundle exec ruby daemon.rb $1"

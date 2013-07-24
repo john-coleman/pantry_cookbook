@@ -1,6 +1,6 @@
 pantry Cookbook
 ===============
-Deploys and configures the Pantry webapp
+Deploys and configures the Pantry service and daemons
 
 Requirements
 ------------

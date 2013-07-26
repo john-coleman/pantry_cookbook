@@ -134,11 +134,11 @@ application "pantry" do
       environment ({"RAILS_ENV"=>"#{app_env}"})
       action :run
     end
-    node['pantry']['daemons'].each do |daemon|
-      Chef::Log.info "pantry_daemon[#{daemon}] :: deployment starting"
+    # Search for daemon data bag items in the application data bag, deploying each one discovered.
+    search(node['pantry']['app_data_bag'], "id:*_handler").each do |daemon_data_bag_item|
       begin
-        daemon_data_bag_item = data_bag_item(node['pantry']['app_data_bag'], daemon)
-        Chef::Log.info "pantry_daemon[#{daemon}] :: data bag found, rendering init script"
+        daemon = daemon_data_bag_item['id']
+        Chef::Log.info "pantry_daemon[#{daemon}] :: deployment starting, rendering init script"
         template "/etc/init.d/#{daemon}" do
           source "daemon_init.erb"
           owner node['pantry']['user']
@@ -168,7 +168,7 @@ application "pantry" do
             :app_environment => app_env,
             :aws_access_key_id => daemon_data_bag_item['aws_access_key_id'],
             :aws_secret_access_key => daemon_data_bag_item['aws_secret_access_key'],
-            :aws_region => daemon_data_bag_item['aws_region'],
+            :aws_region => node['pantry']['aws_region'],
             :backtrace => daemon_data_bag_item['backtrace'],
             :daemon_name => daemon_data_bag_item['id'],
             :dir_mode => daemon_data_bag_item['dir_mode'],

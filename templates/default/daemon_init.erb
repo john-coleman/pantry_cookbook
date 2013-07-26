@@ -13,4 +13,4 @@
 #                    Chef deploys the daemon and generates this script from template
 ### END INIT INFO
 
-su - <%= @user %> -c "cd <%= @daemon_path %>; bundle exec ruby daemon.rb $1"
+su - <%= @user %> -c "cd <%= @daemon_path %>; ENVIRONMENT=<%= @app_environment %> bundle exec ruby daemon.rb $1"

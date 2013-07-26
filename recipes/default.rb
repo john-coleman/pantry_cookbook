@@ -145,6 +145,7 @@ application "pantry" do
           group node['pantry']['group']
           mode 0755
           variables(
+            :app_environment => app_env,
             :daemon => "#{daemon}",
             :daemon_path => "#{app_path}/current/daemons/#{daemon}",
             :user => node['pantry']['user']
@@ -188,6 +189,7 @@ application "pantry" do
           to "#{app_path}/shared/#{daemon}_daemon.yml"
           owner node['pantry']['user']
           group node['pantry']['group']
+          subscribes :create, "template[#{app_path}/shared/#{daemon}_daemon.yml]"
           notifies :restart, "service[#{daemon}]", :delayed
         end
       rescue => e

@@ -39,6 +39,15 @@ file "#{deploy_user_item['home']}/.chef/#{knife_data['client_name']}.pem" do
   action :create
 end
 
+# Set up the knife validation key
+file "#{deploy_user_item['home']}/.chef/#{knife_data['validation_name']}.pem" do
+  owner node['pantry']['user']
+  group node['pantry']['group']
+  mode 0640
+  content knife_data['validation_key']
+  action :create
+end
+
 # Set up the SSH key
 file "#{deploy_user_item['home']}/.chef/aws-ssh-keypair.pem" do
   owner node['pantry']['user']
@@ -56,7 +65,9 @@ template "#{deploy_user_item['home']}/.chef/knife.rb" do
   mode 0640
   variables(
     :chef_server => knife_data['chef_server'],
-    :client_name => knife_data['client_name']
+    :client_name => knife_data['client_name'],
+    :validation_key => "#{deploy_user_item['home']}/.chef/#{knife_data['validation_client_name']}.pem",
+    :validation_client_name => knife_data['validation_client_name']
   )
   action :create
 end

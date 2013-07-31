@@ -15,7 +15,7 @@ default['pantry']['chef_data_bag_item'] = "pantry_knife"
 
 default['pantry']['database_adapter'] = "mysql2"
 default['pantry']['database_host'] = "localhost"
-default['pantry']['database_master_role'] = "wonga_linux_pantry_server"
+default['pantry']['database_master_role'] = "pantry_app_server"
 default['pantry']['database_name'] = "pantry"
 default['pantry']['database_username'] = "pantry"
 default['pantry']['database_password'] = "pantry"

@@ -4,7 +4,8 @@ This file is used to list changes made in each version of pantry cookbook.
 
 ## 0.1.6
 
-* Added daemons support based on attribute array of daemon names with a data bag item per daemon to contain configuration parameters and credentials.
+* Added daemons recipe using role names and data bag items to deploy a given daemon
+* Moved pantry user's knife configuration to a separate recipe, also driven by data bag
 
 ## 0.1.5
 

@@ -96,68 +96,6 @@ application "pantry" do
       environment ({"RAILS_ENV"=>"#{app_env}"})
       action :run
     end
-    # Search for daemon data bag items in the application data bag, deploying each one discovered.
-    search(node['pantry']['app_data_bag'], "id:*_handler").each do |daemon_data_bag_item|
-      begin
-        daemon = daemon_data_bag_item['id']
-        Chef::Log.info "pantry_daemon[#{daemon}] :: deployment starting, rendering init script"
-        template "/etc/init.d/#{daemon}" do
-          source "daemon_init.erb"
-          owner node['pantry']['user']
-          group node['pantry']['group']
-          mode 0755
-          variables(
-            :app_environment => app_env,
-            :daemon => "#{daemon}",
-            :daemon_path => "#{app_path}/current/daemons/#{daemon}",
-            :user => node['pantry']['user']
-          )
-          action :create
-        end
-        Chef::Log.info "pantry_daemon[#{daemon}] :: init script rendered, enabling service"
-        service "#{daemon}" do
-          action :enable
-          supports :start => true, :stop => true, :restart => true, :status => true, :reload => true
-        end
-        Chef::Log.info "pantry_daemon[#{daemon}] :: service enabled, rendering config"
-        template "#{app_path}/shared/#{daemon}_daemon.yml" do
-          local true
-          source File.join(app_path,"current","daemons","config","daemon.yml.erb")
-          owner node['pantry']['user']
-          group node['pantry']['group']
-          mode 0640
-          variables(
-            :app_environment => app_env,
-            :aws_access_key_id => daemon_data_bag_item['aws_access_key_id'],
-            :aws_secret_access_key => daemon_data_bag_item['aws_secret_access_key'],
-            :aws_region => node['pantry']['aws_region'],
-            :backtrace => daemon_data_bag_item['backtrace'],
-            :daemon_name => daemon_data_bag_item['id'],
-            :dir_mode => daemon_data_bag_item['dir_mode'],
-            :dir => "#{app_path}/shared",
-            :error_arn => daemon_data_bag_item['error_arn'],
-            :monitor => daemon_data_bag_item['monitor'],
-            :pantry_api_key => daemon_data_bag_item['pantry_api_key'],
-            :pantry_request_timeout => daemon_data_bag_item['pantry_request_timeout'],
-            :pantry_url => node['pantry']['pantry_url'],
-            :queue_name => daemon_data_bag_item['queue_name'],
-            :topic_arn => daemon_data_bag_item['topic_arn']
-          )
-          action :create
-          notifies :restart, "service[#{daemon}]", :delayed
-        end
-        Chef::Log.info "pantry_daemon[#{daemon}] :: config rendered, linking it in to this deployment revision"
-        link "#{app_path}/current/daemons/#{daemon}/daemon.yml" do
-          to "#{app_path}/shared/#{daemon}_daemon.yml"
-          owner node['pantry']['user']
-          group node['pantry']['group']
-          subscribes :create, "template[#{app_path}/shared/#{daemon}_daemon.yml]"
-          notifies :restart, "service[#{daemon}]", :delayed
-        end
-      rescue => e
-        Chef::Log.error "pantry_daemon[#{daemon}] :: deployment failed: #{e}"
-      end
-    end
   end
 
   passenger_apache2 do

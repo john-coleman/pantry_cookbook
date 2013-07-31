@@ -4,11 +4,24 @@ Deploys and configures the Pantry service and daemons
 
 Requirements
 ------------
-TODO: List your cookbook requirements. Be sure to include any requirements this cookbook has on platforms, libraries, other cookbooks, packages, operating systems, etc.
+Ubuntu 12.04 LTS
+Ruby / RVM
+AWS credentials with EC2, SQS and SNS privileges
 
-e.g.
+#### cookbooks
+- `application` - for the capistrano-style deployment and callbacks
+- `application_ruby` - Ruby rails LWRP extension of application
+- `git` - so we can clone the code to deploy
+- `runit` - to run services
+- `passenger_apache2` - Ruby application server, could use `nginx` with `unicorn` or whatever `application_ruby` supports in the future
+- `apache2` - webserver for passenger
+
 #### packages
-- `toaster` - pantry needs toaster to brown your bagel.
+- `libxml2-dev` - xml (nokogiri?)
+- `libxslt1-dev` - xslt (nokogiri?)
+- `libmysqlclient-dev` - mysql client (rails mysql2 adapter)
+- `libcurl4-openssl-dev` - curl ssl support
+- `libpcre3-dev` - regex
 
 Attributes
 ----------
@@ -50,9 +63,6 @@ Just include `pantry` in your node's `run_list`:
 
 Contributing
 ------------
-TODO: (optional) If this is a public cookbook, detail the process for contributing. If this is a private cookbook, remove this section.
-
-e.g.
 1. Fork the repository on Github
 2. Create a named feature branch (like `add_component_x`)
 3. Write you change
@@ -62,4 +72,10 @@ e.g.
 
 License and Authors
 -------------------
-Authors: TODO: List authors
+Authors:
+Pantry Team <pantry@example.com>
+Alex Slynko <pantry@example.com>
+Clive Foley <clive.foley@example.com>
+John Coleman <john.coleman@example.com>
+Justin Connell <justin.connell@example.com>
+Kieran Manning <kieran.manning@example.com>

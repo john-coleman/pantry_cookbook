@@ -66,44 +66,6 @@ mysql_database db_database do
   action :create
 end
 
-# Setup the knife .chef config directory
-directory "#{deploy_user_item['home']}/.chef" do
-  owner node['pantry']['user']
-  group node['pantry']['group']
-  mode 0750
-end
-
-# Set up the knife client key
-file "#{deploy_user_item['home']}/.chef/#{knife_data['client_name']}.pem" do
-  owner node['pantry']['user']
-  group node['pantry']['group']
-  mode 0640
-  content knife_data['client_key']
-  action :create
-end
-
-# Set up the SSH key
-file "#{deploy_user_item['home']}/.chef/aws-ssh-keypair.pem" do
-  owner node['pantry']['user']
-  group node['pantry']['group']
-  mode 0600
-  content knife_data['aws_key']
-  action :create
-end
-
-# Set up the knife client config
-template "#{deploy_user_item['home']}/.chef/knife.rb" do
-  source "knife.rb.erb"
-  owner node['pantry']['user']
-  group node['pantry']['group']
-  mode 0640
-  variables(
-    :chef_server => knife_data['chef_server'],
-    :client_name => knife_data['client_name']
-  )
-  action :create
-end
-
 application "pantry" do
   repository node['pantry']['repo']
   owner node['pantry']['user']

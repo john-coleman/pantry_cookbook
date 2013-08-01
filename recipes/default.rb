@@ -91,11 +91,9 @@ application "pantry" do
   end
 
   before_restart do
-    execute "delayed_job Restart" do
-      command "#{release_path}/script/delayed_job restart"
-      environment ({"RAILS_ENV"=>"#{app_env}"})
-      action :run
-    end
+    Chef::Log.info "#########################################"
+    Chef::Log.info "RESTARTING PANTRY REVISION #{app_revision}"
+    Chef::Log.info "#########################################"
   end
 
   passenger_apache2 do

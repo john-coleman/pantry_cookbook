@@ -31,7 +31,7 @@ node['roles'].each do |daemon|
     when "production"
       bundle_args="--deployment --without development test"
     when "test"
-      bundle_args="--deployment --without development"
+      bundle_args="--without development"
     else
       bundle_args=""
     end

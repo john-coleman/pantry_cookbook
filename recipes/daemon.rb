@@ -27,6 +27,15 @@ node['roles'].each do |daemon|
 
     gem_package "bundler"
 
+    case app_env
+    when "production"
+      bundle_args="--deployment --without development test"
+    when "test"
+      bundle_args="--deployment --without development"
+    else
+      bundle_args=""
+    end
+
     application "#{daemon}" do
       repository daemon_config['repo']
       owner node['pantry']['user']
@@ -35,12 +44,41 @@ node['roles'].each do |daemon|
       path app_path
       environment_name app_env
       deploy_key deploy_user_item['ssh_private_key']
+      packages daemon_config['packages']
       action :force_deploy
 
       before_restart do
+        directory "#{app_path}/shared/vendor_cache" do
+          owner node['pantry']['user']
+          group node['pantry']['group']
+          notifies :create, "link[#{app_path}/current/vendor/cache]", :immediately
+          action :create
+        end
+        link "#{app_path}/current/vendor/cache" do
+          to "#{app_path}/shared/vendor_cache"
+          owner node['pantry']['user']
+          group node['pantry']['group']
+          subscribes :create, "directory[#{app_path}/shared/vendor_cache]"
+          notifies :create, "directory[#{app_path}/shared/vendor_bundle]", :immediately
+        end
+        directory "#{app_path}/shared/vendor_bundle" do
+          owner node['pantry']['user']
+          group node['pantry']['group']
+          notifies :create, "link[#{app_path}/current/vendor/bundle]", :immediately
+          action :create
+        end
+        link "#{app_path}/current/vendor/bundle" do
+          to "#{app_path}/shared/vendor_bundle"
+          owner node['pantry']['user']
+          group node['pantry']['group']
+          subscribes :create, "directory[#{app_path}/shared/vendor_bundle]"
+          notifies :run, "execute[#{daemon}_bundle_install]", :immediately
+          notifies :restart, "service[#{daemon}]", :delayed
+        end
         execute "#{daemon}_bundle_install" do
-          command "cd #{app_path}/current; bundle install"
+          command "cd #{app_path}/current && RAILS_ENV=#{app_env} bundle install --path=vendor/bundle #{bundle_args}"
           action :run
+          subscribes :run, "link[#{app_path}/current/vendor/bundle]"
         end
         Chef::Log.info "pantry_daemon[#{daemon}] :: deployment starting, rendering init script"
         template "/etc/init.d/#{daemon}" do

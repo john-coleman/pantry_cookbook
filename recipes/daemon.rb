@@ -48,19 +48,6 @@ node['roles'].each do |daemon|
       action :force_deploy
 
       before_restart do
-        directory "#{app_path}/shared/vendor_cache" do
-          owner node['pantry']['user']
-          group node['pantry']['group']
-          notifies :create, "link[#{app_path}/current/vendor/cache]", :immediately
-          action :create
-        end
-        link "#{app_path}/current/vendor/cache" do
-          to "#{app_path}/shared/vendor_cache"
-          owner node['pantry']['user']
-          group node['pantry']['group']
-          subscribes :create, "directory[#{app_path}/shared/vendor_cache]"
-          notifies :create, "directory[#{app_path}/shared/vendor_bundle]", :immediately
-        end
         directory "#{app_path}/shared/vendor_bundle" do
           owner node['pantry']['user']
           group node['pantry']['group']

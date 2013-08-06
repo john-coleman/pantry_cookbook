@@ -64,6 +64,8 @@ node['roles'].each do |daemon|
         end
         execute "#{daemon}_bundle_install" do
           command "cd #{app_path}/current && RAILS_ENV=#{app_env} bundle install --path=vendor/bundle #{bundle_args}"
+          user node['pantry']['user']
+          group node['pantry']['group']
           action :run
           subscribes :run, "link[#{app_path}/current/vendor/bundle]"
         end
@@ -76,7 +78,7 @@ node['roles'].each do |daemon|
           variables(
             :app_environment => app_env,
             :daemon => "#{daemon}",
-            :daemon_path => "#{app_path}/current/daemons/#{daemon}",
+            :daemon_path => "#{app_path}/current",
             :user => node['pantry']['user']
           )
           action :create
@@ -89,7 +91,7 @@ node['roles'].each do |daemon|
         Chef::Log.info "pantry_daemon[#{daemon}] :: service enabled, rendering config"
         template "#{app_path}/shared/#{daemon}_daemon.yml" do
           local true
-          source File.join(app_path,"current","daemons","config","daemon.yml.erb")
+          source File.join(app_path,"current","config","daemon.yml.erb")
           owner node['pantry']['user']
           group node['pantry']['group']
           mode 0640
@@ -114,7 +116,7 @@ node['roles'].each do |daemon|
           notifies :restart, "service[#{daemon}]", :delayed
         end
         Chef::Log.info "pantry_daemon[#{daemon}] :: config rendered, linking it in to this deployment revision"
-        link "#{app_path}/current/daemons/#{daemon}/daemon.yml" do
+        link "#{app_path}/current/config/daemon.yml" do
           to "#{app_path}/shared/#{daemon}_daemon.yml"
           owner node['pantry']['user']
           group node['pantry']['group']

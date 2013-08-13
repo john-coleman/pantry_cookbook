@@ -37,10 +37,10 @@ node['roles'].each do |daemon|
     end
 
     application "#{daemon}" do
-      repository daemon_config['repo']
+      repository daemon_config['app_repo']
       owner node['pantry']['user']
       group node['pantry']['group']
-      revision daemon_revision unless daemon_revision.nil?
+      revision daemon_config['app_revision'] unless daemon_config['app_revision'].nil?
       path app_path
       environment_name app_env
       deploy_key deploy_user_item['ssh_private_key']
@@ -97,20 +97,9 @@ node['roles'].each do |daemon|
           mode 0640
           variables(
             :app_environment => app_env,
-            :aws_access_key_id => daemon_config['aws_access_key_id'],
-            :aws_secret_access_key => daemon_config['aws_secret_access_key'],
-            :aws_region => node['pantry']['aws_region'],
-            :backtrace => daemon_config['backtrace'],
-            :daemon_name => daemon_config['id'],
-            :dir_mode => daemon_config['dir_mode'],
+            :config => daemon_config.raw_data,
             :dir => "#{app_path}/shared",
-            :error_arn => daemon_config['error_arn'],
-            :monitor => daemon_config['monitor'],
-            :pantry_api_key => daemon_config['pantry_api_key'],
-            :pantry_request_timeout => daemon_config['pantry_request_timeout'],
-            :pantry_url => node['pantry']['pantry_url'],
-            :queue_name => daemon_config['queue_name'],
-            :topic_arn => daemon_config['topic_arn']
+            :pantry_url => node['pantry']['pantry_url']
           )
           action :create
           notifies :restart, "service[#{daemon}]", :delayed

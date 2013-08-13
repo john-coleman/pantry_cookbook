@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of pantry cookbook.
 
+## 0.1.7
+
+* Daemon data bag item raw data is now passed through to the template allowing data-drive config
+* Git app_revision merged to each daemon's data bag item
+
 ## 0.1.6
 
 * Added daemons recipe using role names and data bag items to deploy a given daemon

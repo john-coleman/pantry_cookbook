@@ -40,7 +40,7 @@ file "#{deploy_user_item['home']}/.chef/#{knife_data['client_name']}.pem" do
 end
 
 # Set up the knife validation key
-file "#{deploy_user_item['home']}/.chef/#{knife_data['validation_name']}.pem" do
+file "#{deploy_user_item['home']}/.chef/#{knife_data['validation_client_name']}.pem" do
   owner node['pantry']['user']
   group node['pantry']['group']
   mode 0640

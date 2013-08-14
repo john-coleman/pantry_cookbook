@@ -22,7 +22,7 @@ node['roles'].each do |daemon|
 
 
     # Get Pantry attributes from specified data bag item if it exists or fall back to attribute
-    daemon_revision = data_bag_item(node['pantry']['app_data_bag'], "#{daemon}_revision")['app_revision']
+    daemon_revision = data_bag_item(node['pantry']['app_data_bag'], "#{daemon}")['app_revision']
     daemon_config = data_bag_item(node['pantry']['app_data_bag'], daemon)
 
     gem_package "bundler"

@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of pantry cookbook.
 
+## 0.1.8
+
+* Updating apache vhost template for Rails3 RackBaseURI directive
+
 ## 0.1.7
 
 * Daemon data bag item raw data is now passed through to the template allowing data-drive config

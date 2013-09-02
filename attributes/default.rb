@@ -29,3 +29,17 @@ default['pantry']['webapp_template'] = "pantry_apache.conf.erb"
 
 default['pantry']['nodejs_package'] = "nodejs"
 default['pantry']['ssh_configs'] = []
+
+default['pantry']['omniauth']['title'] = "Pantry LDAP Login"
+default['pantry']['omniauth']['host'] = "ldap.example.com"
+default['pantry']['omniauth']['host'] = 3268
+default['pantry']['omniauth']['method'] = "plain"
+default['pantry']['omniauth']['base'] = "dc=example,dc=com"
+default['pantry']['omniauth']['uid'] = "sAMAccountName"
+default['pantry']['omniauth']['bind_dn'] = "your_user@example.com"
+default['pantry']['omniauth']['password'] = "secret_password"
+default['pantry']['omniauth']['auth_method'] = "simple"
+default['pantry']['sqs']['queue_name'] = "pantry_example_com-ec2_boot_command"
+default['pantry']["aws"]["access_key_id"] = 'AKIEXAMPLEACCESSKEYZ'
+default['pantry']["aws"]["secret_access_key"] = "your_secret_access_key"
+default['pantry']["aws"]["region"] = "eu-west-1"

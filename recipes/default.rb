@@ -22,11 +22,12 @@ app_port = node['pantry']['app_port']
 # Get Pantry attributes from specified data bag item if it exists or fall back to attribute
 begin
   app_data_bag_item = data_bag_item(node['pantry']['app_data_bag'], node['pantry']['app_data_bag_item'])
-  app_revision = app_data_bag_item['app_revision']
+  pantry_config = app_data_bag_item.raw_data
 rescue
   Chef::Log.warn "Data Bag #{node['pantry']['app_data_bag']} does not exist, falling back to attribute"
-  app_revision = node['pantry']['app_revision']
+  pantry_config = node['pantry']
 end
+app_revision = pantry_config['app_revision']
 
 # Get Pantry Chef credentials from specified data bag item if it exists of fall back to attributes
 begin
@@ -66,6 +67,7 @@ mysql_database db_database do
   action :create
 end
 
+
 application "pantry" do
   repository node['pantry']['repo']
   owner node['pantry']['user']
@@ -87,6 +89,52 @@ application "pantry" do
       database db_database
       username db_username
       password db_password
+    end
+  end
+  
+  before_migrate do
+    template "#{app_path}/shared/aws.yml" do
+      local true
+      source File.join(release_path,"config","aws.yml.erb")
+      variables(
+        :app_environment => app_env,
+        :config => pantry_config
+      )
+      owner node['pantry']['user']
+      group node['pantry']['group']
+      mode 0644
+      action :create
+    end
+    
+    Chef::Log.info "pantry :: aws.yml rendered, linking it in to this deployment revision"
+    
+    link "#{release_path}/config/aws.yml" do
+      to "#{app_path}/shared/aws.yml"
+      owner node['pantry']['user']
+      group node['pantry']['group']
+      subscribes :create, "template[#{app_path}/shared/aws.yml]"
+    end
+
+    template "#{app_path}/shared/pantry.yml" do
+      local true
+      source File.join(release_path,"config","pantry.yml.erb")
+      variables(
+        :app_environment => app_env,
+        :config => pantry_config
+      )
+      owner node['pantry']['user']
+      group node['pantry']['group']
+      mode 0644
+      action :create
+    end
+    
+    Chef::Log.info "pantry :: pantry.yml rendered, linking it in to this deployment revision"
+    
+    link "#{release_path}/config/pantry.yml" do
+      to "#{app_path}/shared/pantry.yml"
+      owner node['pantry']['user']
+      group node['pantry']['group']
+      subscribes :create, "template[#{app_path}/shared/pantry.yml]"
     end
   end
 

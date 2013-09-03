@@ -10,9 +10,9 @@
 include_recipe 'ssh-util'
 
 node['pantry']['ssh_configs'].each do |config|
-  options = config.select {|k,v| ['User', 'IdentityFile', 'StrictHostKeyChecking'].include? k }
+  options = config.select {|k,v| ['User', 'IdentityFile', 'StrictHostKeyChecking'].include?(k) && !v.nil? }
 
-  ssh_config config['host'] do
+  ssh_util_config config['host'] do
     options options
     user config['user']
   end

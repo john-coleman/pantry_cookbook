@@ -28,3 +28,4 @@ default['pantry']['pantry_url'] = "http://pantry"
 default['pantry']['webapp_template'] = "pantry_apache.conf.erb"
 
 default['pantry']['nodejs_package'] = "nodejs"
+default['pantry']['ssh_configs'] = []

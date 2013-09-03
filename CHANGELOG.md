@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of pantry cookbook.
 
+## 0.1.9
+
+* Use ssh-util for make settings for ssh-config
+* Introduced Berkshelf
+
 ## 0.1.8
 
 * Updating apache vhost template for Rails3 RackBaseURI directive

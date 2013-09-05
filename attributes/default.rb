@@ -44,3 +44,4 @@ default['pantry']["aws"]["access_key_id"] = 'AKIEXAMPLEACCESSKEYZ'
 default['pantry']["aws"]["secret_access_key"] = "your_secret_access_key"
 default['pantry']["aws"]["region"] = "eu-west-1"
 default['pantry']["aws"]["billing_bucket"] = "pantry-billing_development"
+default['pantry']['pantry']['domain'] = "example.com"

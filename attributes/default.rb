@@ -43,3 +43,4 @@ default['pantry']['aws']['queue_name'] = "pantry_example_com-ec2_boot_command"
 default['pantry']["aws"]["access_key_id"] = 'AKIEXAMPLEACCESSKEYZ'
 default['pantry']["aws"]["secret_access_key"] = "your_secret_access_key"
 default['pantry']["aws"]["region"] = "eu-west-1"
+default['pantry']["aws"]["billing_bucket"] = "pantry-billing_development"

@@ -57,6 +57,7 @@ default['pantry']["aws"]["jenkins_linux_ami"] = "ami-00110010"
 default['pantry']["aws"]["jenkins_linux_server_role"] = "role[jenkins_linux_server]"
 default['pantry']["aws"]["jenkins_windows_agent_role"] = "role[jenkins_windows_agent]"
 default['pantry']['aws']['default_subnet'] = "subnet-00110011"
+default['pantry']['aws']['ebs'] = [{ 'name' => 't1.micro', 'size' => 80}, { 'name' => 'm1.small', 'size' => 160}, { 'name' => 'm1.medium', 'size' => 410 }, { 'name' => 'm1.large', 'size' => 840 }]
 
 default['pantry']['pantry']['domain'] = "example.com"
 default['pantry']['pantry']['default_ou'] = "OU=Computers,DC=wonga,DC=aws"

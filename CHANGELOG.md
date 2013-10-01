@@ -2,6 +2,15 @@
 
 This file is used to list changes made in each version of pantry cookbook.
 
+## 0.1.11
+
+* Enabled HTTPS support for Pantry
+* Emphasized some attributes are to be specified in Data Bag items
+
+## 0.1.10
+
+* Pantry config now passed as block to template
+
 ## 0.1.9
 
 * Use ssh-util for make settings for ssh-config
@@ -13,7 +22,7 @@ This file is used to list changes made in each version of pantry cookbook.
 
 ## 0.1.7
 
-* Daemon data bag item raw data is now passed through to the template allowing data-drive config
+* Daemon data bag item raw data is now passed through to the template allowing data-driven config
 * Git app_revision merged to each daemon's data bag item
 
 ## 0.1.6

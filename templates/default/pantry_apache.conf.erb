@@ -1,4 +1,5 @@
 <VirtualHost *:80>
+<% if @params[:extra]['webapp']['ssl_enabled'] %>
   ServerName <%= @params[:server_name] %>
   ServerAlias <% @params[:server_aliases].each do |a| %><%= "#{a}" %> <% end %>
   DocumentRoot <%= @params[:docroot] %>
@@ -16,6 +17,37 @@
   LogLevel info
   ErrorLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-error.log
   CustomLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-access.log combined
+
+</VirtualHost>
+
+<VirtualHost *:443>
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/<%= @params[:extra]['webapp']['ssl_cert_name'] %>
+  SSLCertificateKeyFile /etc/ssl/private/<%= @params[:extra]['webapp']['ssl_key_name'] %>
+  SSLCertificateChainFile /etc/ssl/certs/<%= @params[:extra]['webapp']['ssl_ca_cert_name'] %>
+<% end %>
+  ServerName <%= @params[:server_name] %>
+  ServerAlias <% @params[:server_aliases].each do |a| %><%= "#{a}" %> <% end %>
+  DocumentRoot <%= @params[:docroot] %>
+
+  RackBaseURI /
+  RailsEnv <%= @params[:rails_env] %>
+
+  <Directory <%= @params[:docroot] %>>
+    Options FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  LogLevel info
+<% if @params[:extra]['webapp']['ssl_enabled'] %>
+  ErrorLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-error-ssl.log
+  CustomLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-access-ssl.log combined
+<% else %>
+  ErrorLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-error.log
+  CustomLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-access.log combined
+<% end %>
 
 #  RewriteEngine On
 #  RewriteLog <%= node['apache']['log_dir'] %>/<%= @application_name %>-rewrite.log

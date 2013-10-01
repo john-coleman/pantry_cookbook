@@ -67,6 +67,33 @@ mysql_database db_database do
   action :create
 end
 
+if pantry_config['webapp']['ssl_enabled']
+  file "/etc/ssl/certs/#{pantry_config['webapp']['ssl_ca_cert_name']}" do
+    content pantry_config['webapp']['ssl_ca_cert']
+    owner "root"
+    group "ssl-cert"
+    mode 644
+  end
+
+  execute "ssl_ca_cert_rehash" do
+    command "c_rehash"
+    subscribes :create, "file[/etc/ssl/certs/#{pantry_config['webapp']['ssl_ca_cert_name']}", :immediately
+  end
+
+  file "/etc/ssl/certs/#{pantry_config['webapp']['ssl_cert_name']}" do
+    content pantry_config['webapp']['ssl_cert']
+    owner "root"
+    group "ssl-cert"
+    mode 644
+  end
+
+  file "/etc/ssl/private/#{pantry_config['webapp']['ssl_key_name']}" do
+    content pantry_config['webapp']['ssl_key']
+    owner "root"
+    group "root"
+    mode 600
+  end
+end
 
 application "pantry" do
   repository node['pantry']['repo']
@@ -91,7 +118,7 @@ application "pantry" do
       password db_password
     end
   end
-  
+
   before_migrate do
     template "#{app_path}/shared/aws.yml" do
       local true
@@ -105,9 +132,9 @@ application "pantry" do
       mode 0644
       action :create
     end
-    
+
     Chef::Log.info "pantry :: aws.yml rendered, linking it in to this deployment revision"
-    
+
     link "#{release_path}/config/aws.yml" do
       to "#{app_path}/shared/aws.yml"
       owner node['pantry']['user']
@@ -127,9 +154,9 @@ application "pantry" do
       mode 0644
       action :create
     end
-    
+
     Chef::Log.info "pantry :: pantry.yml rendered, linking it in to this deployment revision"
-    
+
     link "#{release_path}/config/pantry.yml" do
       to "#{app_path}/shared/pantry.yml"
       owner node['pantry']['user']
@@ -146,7 +173,8 @@ application "pantry" do
 
   passenger_apache2 do
     server_aliases node['pantry']['server_aliases']
-    webapp_template node['pantry']['webapp_template']
+    webapp_template node['pantry']['webapp']['template']
+    params pantry_config
   end
 end
 

@@ -163,6 +163,28 @@ application "pantry" do
       group node['pantry']['group']
       subscribes :create, "template[#{app_path}/shared/pantry.yml]"
     end
+    
+    template "#{app_path}/shared/newrelic.yml" do
+      local true
+      source File.join(release_path,"config","newrelic.yml.erb")
+      variables(
+        :app_environment => app_env,
+        :config => pantry_config
+      )
+      owner node['pantry']['user']
+      group node['pantry']['group']
+      mode 0644
+      action :create
+    end
+
+    Chef::Log.info "pantry :: newrelic.yml rendered, linking it in to this deployment revision"
+
+    link "#{release_path}/config/newrelic.yml" do
+      to "#{app_path}/shared/newrelic.yml"
+      owner node['pantry']['user']
+      group node['pantry']['group']
+      subscribes :create, "template[#{app_path}/shared/newrelic.yml]"
+    end
   end
 
   before_restart do

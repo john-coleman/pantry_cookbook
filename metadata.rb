@@ -11,3 +11,5 @@ depends "git"
 depends "runit"
 depends "passenger_apache2"
 depends 'ssh-util'
+depends 'mysql'
+depends 'database'

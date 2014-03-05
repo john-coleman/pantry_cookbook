@@ -72,7 +72,7 @@ if pantry_config['webapp']['ssl_enabled']
     content pantry_config['webapp']['ssl_ca_cert']
     owner "root"
     group "ssl-cert"
-    mode 644
+    mode 0644
   end
 
   execute "ssl_ca_cert_rehash" do
@@ -84,14 +84,14 @@ if pantry_config['webapp']['ssl_enabled']
     content pantry_config['webapp']['ssl_cert']
     owner "root"
     group "ssl-cert"
-    mode 644
+    mode 0644
   end
 
   file "/etc/ssl/private/#{pantry_config['webapp']['ssl_key_name']}" do
     content pantry_config['webapp']['ssl_key']
     owner "root"
     group "root"
-    mode 600
+    mode 0600
   end
 end
 

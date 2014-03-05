@@ -12,6 +12,7 @@ include_recipe "runit"
 #include_recipe "application"
 
 node['roles'].each do |daemon|
+  #if /^pantry*_handler/.match(daemon)
   if /^*_handler/.match(daemon)
 
     # We pull the ssh private key from the specified users data bag item
@@ -35,7 +36,7 @@ node['roles'].each do |daemon|
       bundle_args=""
     end
 
-    application daemon do
+    application "#{daemon}" do
       repository daemon_config['app_repo']
       owner node['pantry']['user']
       group node['pantry']['group']
@@ -59,6 +60,7 @@ node['roles'].each do |daemon|
           group node['pantry']['group']
           subscribes :create, "directory[#{app_path}/shared/vendor_bundle]"
           notifies :run, "execute[#{daemon}_bundle_install]", :immediately
+          notifies :restart, "service[#{daemon}]", :delayed
         end
         execute "#{daemon}_bundle_install" do
           command "cd #{app_path}/current && RAILS_ENV=#{app_env} bundle install --path=vendor/bundle #{bundle_args}"
@@ -82,8 +84,8 @@ node['roles'].each do |daemon|
           action :create
         end
         Chef::Log.info "pantry_daemon[#{daemon}] :: init script rendered, enabling service"
-        service daemon do
-          action [:enable, :stop]
+        service "#{daemon}" do
+          action :enable
           supports :start => true, :stop => true, :restart => true, :status => true, :reload => true
         end
         Chef::Log.info "pantry_daemon[#{daemon}] :: service enabled, rendering config"
@@ -100,6 +102,7 @@ node['roles'].each do |daemon|
             :pantry_url => node['pantry']['pantry_url']
           )
           action :create
+          notifies :restart, "service[#{daemon}]", :delayed
         end
         Chef::Log.info "pantry_daemon[#{daemon}] :: config rendered, linking it in to this deployment revision"
         link "#{app_path}/current/config/daemon.yml" do
@@ -107,14 +110,9 @@ node['roles'].each do |daemon|
           owner node['pantry']['user']
           group node['pantry']['group']
           subscribes :create, "template[#{app_path}/shared/#{daemon}_daemon.yml]"
+          notifies :restart, "service[#{daemon}]", :delayed
         end
       end
-    end
-
-    count = daemon_config['daemon']['running_count'] || 1
-    execute "start #{daemon}" do
-      command (["/etc/init.d/#{daemon} start"] * count.to_i).join(" && ")
-      action :run
     end
   end
 end

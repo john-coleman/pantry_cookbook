@@ -1,6 +1,11 @@
 # CHANGELOG for pantry
 
 This file is used to list changes made in each version of pantry cookbook.
+## 0.3.0
+
+* Reverted multiple daemons run
+* Added cookbook for creating generic user_groups
+
 ## 0.2.0
 
 * Allow to start daemon multiple times

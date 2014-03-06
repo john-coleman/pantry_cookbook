@@ -20,23 +20,14 @@ app_path = node['pantry']['app_path']
 app_port = node['pantry']['app_port']
 
 # Get Pantry attributes from specified data bag item if it exists or fall back to attribute
-begin
-  app_data_bag_item = data_bag_item(node['pantry']['app_data_bag'], node['pantry']['app_data_bag_item'])
-  pantry_config = app_data_bag_item.raw_data
-rescue
-  Chef::Log.warn "Data Bag #{node['pantry']['app_data_bag']} does not exist, falling back to attribute"
-  pantry_config = node['pantry']
-end
+app_data_bag_item = data_bag_item(node['pantry']['app_data_bag'], node['pantry']['app_data_bag_item'])
+pantry_config = app_data_bag_item.raw_data
+
 app_revision = pantry_config['app_revision']
 
 # Get Pantry Chef credentials from specified data bag item if it exists of fall back to attributes
-begin
-  chef_data_bag_item = data_bag_item(node['pantry']['chef_data_bag'], node['pantry']['chef_data_bag_item'])
-  knife_data = chef_data_bag_item['chef']
-rescue
-  Chef::Log.warn "Data Bag #{node['pantry']['app_data_bag']} does not exist, falling back to attribute"
-  knife_data = node['pantry']['chef']
-end
+chef_data_bag_item = data_bag_item(node['pantry']['chef_data_bag'], node['pantry']['chef_data_bag_item'])
+knife_data = chef_data_bag_item['chef']
 
 Chef::Log.info "#########################################"
 Chef::Log.info "DEPLOYING PANTRY REVISION #{app_revision}"

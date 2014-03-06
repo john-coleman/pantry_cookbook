@@ -11,13 +11,8 @@
 deploy_user_item = data_bag_item('users', node['pantry']['user'])
 
 # Get Pantry Chef credentials from specified data bag item if it exists of fall back to attributes
-begin
-  chef_data_bag_item = data_bag_item(node['pantry']['chef_data_bag'], node['pantry']['chef_data_bag_item'])
-  knife_data = chef_data_bag_item['chef']
-rescue
-  Chef::Log.warn "Data Bag #{node['pantry']['chef_data_bag']} does not exist, falling back to attribute"
-  knife_data = node['pantry']['chef']
-end
+chef_data_bag_item = data_bag_item(node['pantry']['chef_data_bag'], node['pantry']['chef_data_bag_item'])
+knife_data = chef_data_bag_item['chef']
 
 Chef::Log.info "#########################################"
 Chef::Log.info "DEPLOYING pantry_knife"

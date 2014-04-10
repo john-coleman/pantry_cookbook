@@ -138,7 +138,8 @@ application "pantry" do
       source File.join(release_path,"config","pantry.yml.erb")
       variables(
         :app_environment => app_env,
-        :config => pantry_config
+        :config => pantry_config,
+        :pantry_url => node['pantry']['pantry_url']
       )
       owner node['pantry']['user']
       group node['pantry']['group']

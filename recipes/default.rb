@@ -12,6 +12,7 @@ include_recipe "runit"
 include_recipe "passenger_apache2"
 
 package node['pantry']['nodejs_package']
+chef_gem 'mysql'
 
 # We pull the ssh private key from the specified users data bag item
 deploy_user_item = data_bag_item('users', node['pantry']['user'])

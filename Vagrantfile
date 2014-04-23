@@ -43,7 +43,6 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
     chef.add_recipe "sudo"
     chef.add_recipe "ntp"
     chef.add_recipe "mysql::server"
-    chef.add_recipe "mysql::ruby"
     chef.add_recipe "database"
     chef.add_recipe "recipe[pantry::ssh]"
     chef.add_recipe "postfix::client"

@@ -1,6 +1,13 @@
 # CHANGELOG for pantry
 
 This file is used to list changes made in each version of pantry cookbook.
+
+## 0.3.2
+
+* Update Berkshelf version
+* Update mysql cookbook
+* Install mysql gem manually
+
 ## 0.3.1
 
 * Use pantry_url in pantry_deployment

@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of pantry cookbook.
 
+## 0.3.3
+
+* Use mysql-chef_gem instead of installing mysql gem
+* Freeze application_ruby
+
 ## 0.3.2
 
 * Update Berkshelf version

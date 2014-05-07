@@ -1,11 +1,11 @@
-site :opscode
+source 'http://api.berkshelf.com'
 
 metadata
-cookbook "ssh-util"
-cookbook "wonga_splunk", git: 'git@github.com:QuickbridgeLtd/wonga_splunk_cookbook.git'
-cookbook "apt"
-cookbook "sudo"
-cookbook "ntp"
-cookbook "postfix"
-cookbook "chef-solo-search"
+cookbook 'ssh-util', github: 'QuickbridgeLtd/chef-ssh'
+cookbook 'wonga_splunk', git: 'QuickbridgeLtd/wonga_splunk_cookbook'
+cookbook 'apt'
+cookbook 'sudo'
+cookbook 'ntp'
+cookbook 'postfix'
+cookbook 'chef-solo-search'
 

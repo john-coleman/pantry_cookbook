@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of pantry cookbook.
 
+## 0.4.3
+* Added test kitchen
+
 ## 0.4.2
 * Big cleaning of cookbook
 

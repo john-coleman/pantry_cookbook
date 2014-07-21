@@ -1,0 +1,9 @@
+{
+  "comment" : "Pantry Service User",
+  "groups" : [ "pantry", "services", "users", "superadmin" ],
+  "id" : "pantry",
+  "home" : "/home/pantry",
+  "shell": "/bin/bash",
+  "chef_private_keys" : { },
+  "uid" : 2103
+}

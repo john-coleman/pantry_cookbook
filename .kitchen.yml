@@ -1,0 +1,58 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: ubuntu-12.04
+    driver:
+      box: precise64
+      host_name: 'drupal.vagrant'
+      customize:
+        memory: 650
+
+suites:
+  - name: default
+    data_bags_path: 'test/kitchen/data_bags'
+    run_list:
+      - recipe[chef-solo-search]
+      - recipe[apt]
+      - recipe[users]
+      - recipe[users::sysadmins]
+      - recipe[build-essential]
+      - recipe[pantry::users]
+      - recipe[pantry::pantry_knife]
+      - recipe[pantry::dev_test_packages]
+      - recipe[mysql::server]
+      - recipe[pantry]
+    attributes:
+      apt:
+        compile_time_update: true
+      authorization:
+        groups:
+          - name: services
+            id: 2302
+        sudo:
+          groups:            sysadmin
+          include_sudoers_d: true
+          passwordless:      true
+          users:
+            ubuntu
+      build-essential:
+        compile_time: true
+      mysql:
+        server_root_password: 'test'
+        server_repl_password: "iloverandompasswordsbutthiswilldo"
+        server_debian_password: "iloverandompasswordsbutthiswilldo"
+      pantry:
+        repo: 'https://github.com/alex-slynko-wonga/sample-rails.4.0.0-mysql.git'
+        database_name: pantry
+        database_username: pantry
+        database_password: pantry
+        user: pantry
+        app_data_bag: app
+        app_data_bag_item: item
+        chef_data_bag: chef
+        chef_data_bag_item: item

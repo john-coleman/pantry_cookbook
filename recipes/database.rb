@@ -1,4 +1,8 @@
-include_recipe 'mysql-chef_gem'
+mysql_client('default').run_action(:create)
+
+gem_package 'mysql' do
+  gem_binary RbConfig::CONFIG['bindir'] + '/gem'
+end.run_action(:install)
 # rails database sub-resource can't access node attributes directly.
 db_database = node['pantry']['database_name']
 db_username = node['pantry']['database_username']

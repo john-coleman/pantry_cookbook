@@ -1,7 +1,7 @@
 DEPENDENCIES
   application
     git: git://github.com/poise/application.git
-    revision: e8b315b26cd8865c592e5b8f006ccc8cad654168
+    revision: d44ec06d0b2a87732e91c005ed2048c824fd63ed
   application_ruby
     git: git://github.com/alex-slynko-wonga/application_ruby.git
     revision: c88de4335f16deb32692a3f2e41f9bbf82b4f3cf
@@ -29,7 +29,7 @@ GRAPH
     iptables (>= 0.0.0)
     logrotate (>= 0.0.0)
     pacman (>= 0.0.0)
-  application (4.1.5)
+  application (4.1.6)
   application_ruby (3.0.3)
     apache2 (>= 0.0.0)
     application (~> 4.0)
@@ -60,8 +60,7 @@ GRAPH
     yum-epel (>= 0.0.0)
   iptables (0.14.1)
   logrotate (1.6.0)
-  mysql (6.0.6)
-    smf (>= 0.0.0)
+  mysql (5.6.1)
     yum-mysql-community (>= 0.0.0)
   mysql-chef_gem (1.0.0)
     build-essential (>= 0.0.0)
@@ -70,13 +69,12 @@ GRAPH
   openssl (2.0.2)
     chef-sugar (>= 0.0.0)
   pacman (1.1.1)
-  pantry (0.4.1)
+  pantry (0.4.3)
     application (>= 0.0.0)
     application_ruby (>= 0.0.0)
-    database (>= 0.0.0)
+    database (~> 2.0)
     git (>= 0.0.0)
-    mysql (>= 0.0.0)
-    mysql-chef_gem (>= 0.0.0)
+    mysql (~> 5.0)
     passenger_apache2 (>= 0.0.0)
     rbenv (>= 0.0.0)
     runit (>= 0.0.0)
@@ -90,20 +88,15 @@ GRAPH
     apt (>= 1.9.0)
     build-essential (>= 0.0.0)
     openssl (>= 0.0.0)
-  rbac (1.0.2)
   rbenv (1.7.1)
     apt (>= 0.0.0)
     build-essential (>= 0.0.0)
     git (>= 0.0.0)
     ohai (>= 1.1)
-  resource-control (0.1.1)
-  runit (1.5.12)
+  runit (1.5.14)
     build-essential (>= 0.0.0)
     yum (~> 3.0)
     yum-epel (>= 0.0.0)
-  smf (2.2.1)
-    rbac (>= 1.0.1)
-    resource-control (>= 0.0.0)
   ssh-util (0.6.6)
   sudo (2.7.1)
   unicorn (2.0.0)
@@ -114,5 +107,5 @@ GRAPH
   yum (3.5.2)
   yum-epel (0.6.0)
     yum (~> 3.0)
-  yum-mysql-community (0.1.11)
+  yum-mysql-community (0.1.12)
     yum (>= 3.0)

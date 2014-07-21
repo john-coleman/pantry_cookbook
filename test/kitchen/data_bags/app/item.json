@@ -1,0 +1,24 @@
+{
+  "app_revision": "master",
+  "app_environment": "production",
+  "id": "item",
+  "aws": {
+    "flavors": [
+      {
+        "name": "t1.micro",
+        "size": 50
+      }
+    ]
+  },
+  "mailer": {
+  },
+  "omniauth": {
+  },
+  "pantry": {
+  },
+  "newrelic": {
+  },
+  "webapp": {
+    "ssl_enabled": false
+  }
+}

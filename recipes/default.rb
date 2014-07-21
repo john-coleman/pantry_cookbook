@@ -89,71 +89,32 @@ application 'pantry' do
   end
 
   before_migrate do
-    template "#{app_path}/shared/aws.yml" do
-      local true
-      source File.join(release_path, 'config', 'aws.yml.erb')
-      variables(
-        app_environment: app_env,
-        config: pantry_config
-      )
-      owner node['pantry']['user']
-      group node['pantry']['group']
-      mode 0644
-      action :create
-    end
+    ::Dir[::File.join(release_path, 'config', '*.erb')].each do |template_name|
+      link_name = template_name[0..-5]
+      shared_name = link_name.gsub(::File.join(release_path, 'config'), ::File.join(app_path, 'shared'))
 
-    Chef::Log.info 'pantry :: aws.yml rendered, linking it in to this deployment revision'
+      template shared_name do
+        local true
+        source template
+        variables(
+          app_environment: app_env,
+          config: pantry_config,
+          pantry_url: node['pantry']['pantry_url']
+        )
+        owner node['pantry']['user']
+        group node['pantry']['group']
+        mode 0644
+        action :create
+      end
 
-    link "#{release_path}/config/aws.yml" do
-      to "#{app_path}/shared/aws.yml"
-      owner node['pantry']['user']
-      group node['pantry']['group']
-      subscribes :create, "template[#{app_path}/shared/aws.yml]"
-    end
+      Chef::Log.info "pantry :: #{shared_name} rendered, linking it in to this deployment revision"
 
-    template "#{app_path}/shared/pantry.yml" do
-      local true
-      source File.join(release_path, 'config', 'pantry.yml.erb')
-      variables(
-        app_environment: app_env,
-        config: pantry_config,
-        pantry_url: node['pantry']['pantry_url']
-      )
-      owner node['pantry']['user']
-      group node['pantry']['group']
-      mode 0644
-      action :create
-    end
-
-    Chef::Log.info 'pantry :: pantry.yml rendered, linking it in to this deployment revision'
-
-    link "#{release_path}/config/pantry.yml" do
-      to "#{app_path}/shared/pantry.yml"
-      owner node['pantry']['user']
-      group node['pantry']['group']
-      subscribes :create, "template[#{app_path}/shared/pantry.yml]"
-    end
-
-    template "#{app_path}/shared/newrelic.yml" do
-      local true
-      source File.join(release_path, 'config', 'newrelic.yml.erb')
-      variables(
-        app_environment: app_env,
-        config: pantry_config
-      )
-      owner node['pantry']['user']
-      group node['pantry']['group']
-      mode 0644
-      action :create
-    end
-
-    Chef::Log.info 'pantry :: newrelic.yml rendered, linking it in to this deployment revision'
-
-    link "#{release_path}/config/newrelic.yml" do
-      to "#{app_path}/shared/newrelic.yml"
-      owner node['pantry']['user']
-      group node['pantry']['group']
-      subscribes :create, "template[#{app_path}/shared/newrelic.yml]"
+      link link_name do
+        to shared_name
+        owner node['pantry']['user']
+        group node['pantry']['group']
+        subscribes :create, "template[#{shared_name}]"
+      end
     end
   end
 

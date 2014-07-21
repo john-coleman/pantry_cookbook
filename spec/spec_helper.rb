@@ -3,6 +3,7 @@ require 'chefspec/berkshelf'
 require 'pry'
 
 RSpec.configure do |config|
+  config.disable_monkey_patching!
   # Specify the operating platform to mock Ohai data from (default: nil)
   config.platform = 'ubuntu'
 

@@ -1,4 +1,8 @@
 DEPENDENCIES
+  application_ruby
+    git: git://github.com/alex-slynko-wonga/application_ruby.git
+    revision: c88de4335f16deb32692a3f2e41f9bbf82b4f3cf
+    branch: fix_symlink_and_version
   apt
   chef-solo-search
   ntp
@@ -7,9 +11,12 @@ DEPENDENCIES
     metadata: true
   postfix
   ssh-util
+    git: git://github.com/QuickbridgeLtd/chef-ssh.git
+    revision: 0bd58e68d6cdcae49a95a86c298d145df7860b61
+    branch: add_windows_support
   sudo
   wonga_splunk
-    git: git@github.com:QuickbridgeLtd/wonga_splunk_cookbook.git
+    git: ssh://gerrit.example.com:29418/cookbooks/wonga_splunk_cookbook
     revision: 491149282c1337ba44a42945ad50f734dccdf7e3
 
 GRAPH
@@ -18,19 +25,20 @@ GRAPH
     logrotate (>= 0.0.0)
     pacman (>= 0.0.0)
   application (4.1.4)
-  application_ruby (2.2.0)
+  application_ruby (3.0.3)
     apache2 (>= 0.0.0)
     application (~> 4.0)
     logrotate (~> 1.0)
     passenger_apache2 (>= 0.0.0)
     runit (~> 1.0)
     unicorn (>= 0.0.0)
-  apt (2.3.10)
-  aws (2.2.0)
-  build-essential (2.0.0)
+  apt (2.4.0)
+  aws (2.3.0)
+  build-essential (2.0.4)
   chef-solo-search (0.5.1)
+  chef-sugar (2.0.0)
   chef_handler (1.1.6)
-  database (2.1.8)
+  database (2.2.0)
     aws (>= 0.0.0)
     mysql (>= 5.0.0)
     mysql-chef_gem (>= 0.0.0)
@@ -45,17 +53,19 @@ GRAPH
     yum (~> 3.0)
     yum-epel (>= 0.0.0)
   iptables (0.13.2)
-  logrotate (1.5.0)
-  mysql (5.2.0)
+  logrotate (1.6.0)
+  mysql (5.3.6)
+    yum-mysql-community (>= 0.0.0)
   mysql-chef_gem (0.0.2)
     build-essential (>= 0.0.0)
     mysql (>= 0.0.0)
-  ntp (1.6.2)
-  openssl (1.1.0)
+  ntp (1.6.4)
+  openssl (2.0.0)
+    chef-sugar (>= 0.0.0)
   pacman (1.1.1)
-  pantry (0.3.3)
+  pantry (0.3.4)
     application (>= 0.0.0)
-    application_ruby (= 2.2.0)
+    application_ruby (>= 0.0.0)
     database (>= 0.0.0)
     git (>= 0.0.0)
     mysql (>= 0.0.0)
@@ -67,23 +77,25 @@ GRAPH
   passenger_apache2 (2.2.0)
     apache2 (>= 1.0.4)
     build-essential (>= 0.0.0)
-  postfix (3.1.8)
-  postgresql (3.3.4)
-    apt (>= 0.0.0)
+  postfix (3.3.1)
+  postgresql (3.4.1)
+    apt (>= 1.9.0)
     build-essential (>= 0.0.0)
     openssl (>= 0.0.0)
   runit (1.5.10)
     build-essential (>= 0.0.0)
     yum (~> 3.0)
     yum-epel (>= 0.0.0)
-  ssh-util (0.6.3)
-  sudo (2.5.2)
-  unicorn (1.3.0)
+  ssh-util (0.6.6)
+  sudo (2.6.0)
+  unicorn (2.0.0)
   users (1.7.0)
-  windows (1.30.2)
+  windows (1.32.3)
     chef_handler (>= 0.0.0)
   wonga_splunk (0.2.0)
   xfs (1.1.0)
-  yum (3.2.0)
+  yum (3.2.2)
   yum-epel (0.3.6)
     yum (~> 3.0)
+  yum-mysql-community (0.1.8)
+    yum (>= 3.0.0)

@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of pantry cookbook.
 
+## 0.3.5
+* Moved database & user creation in separate recipe
+
+## 0.3.4
+* Fixed pantry deployment
+
 ## 0.3.3
 
 * Use mysql-chef_gem instead of installing mysql gem

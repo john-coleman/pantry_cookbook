@@ -4,7 +4,7 @@ maintainer_email 'pantry@example.com'
 license          'All rights reserved'
 description      'Installs/Configures Pantry services'
 long_description IO.read(File.join(File.dirname(__FILE__),'README.md'))
-version          '0.3.4'
+version          '0.3.5'
 depends "application"
 depends "application_ruby"
 depends "git"

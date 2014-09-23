@@ -10,7 +10,7 @@
 include_recipe "git"
 include_recipe "runit"
 include_recipe "passenger_apache2"
-include_recipe "mysql-chef_gem"
+include_recipe "pantry::database"
 
 package node['pantry']['nodejs_package']
 
@@ -39,26 +39,6 @@ db_adapter = node['pantry']['database_adapter']
 db_database = node['pantry']['database_name']
 db_username = node['pantry']['database_username']
 db_password = node['pantry']['database_password']
-
-# Create the database and user
-mysql_connection_info = {:host => 'localhost',
-                         :username => 'root',
-                         :password => node['mysql']['server_root_password']}
-
-
-mysql_database_user db_username do
-  connection mysql_connection_info
-  password db_password
-  host '%'
-  database_name db_database
-  privileges [:all]
-  action :grant
-end
-
-mysql_database db_database do
-  connection mysql_connection_info
-  action :create
-end
 
 if pantry_config['webapp']['ssl_enabled']
   file "/etc/ssl/certs/#{pantry_config['webapp']['ssl_ca_cert_name']}" do

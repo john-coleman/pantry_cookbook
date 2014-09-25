@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of pantry cookbook.
 
+## 0.3.6
+* Added rbenv
+
 ## 0.3.5
 * Moved database & user creation in separate recipe
 

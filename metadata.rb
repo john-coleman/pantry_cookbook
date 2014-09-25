@@ -5,13 +5,15 @@ license          'All rights reserved'
 description      'Installs/Configures Pantry services'
 long_description IO.read(File.join(File.dirname(__FILE__),'README.md'))
 version          '0.3.5'
+
 depends "application"
 depends "application_ruby"
 depends "git"
-depends "runit"
 depends "passenger_apache2"
-depends 'ssh-util'
-depends 'mysql'
+depends "runit"
 depends 'database'
-depends 'users'
+depends 'mysql'
 depends 'mysql-chef_gem'
+depends 'rbenv'
+depends 'ssh-util'
+depends 'users'

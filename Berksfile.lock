@@ -14,12 +14,14 @@ DEPENDENCIES
     path: .
     metadata: true
   postfix
-  rbenv
   ssh-util
     git: git://github.com/QuickbridgeLtd/chef-ssh.git
     revision: 0bd58e68d6cdcae49a95a86c298d145df7860b61
     branch: add_windows_support
   sudo
+  users
+    git: git://github.com/sethvargo-cookbooks/users.git
+    revision: fca9a42ab44dadbb98432c931dfc6c049ecc23ce
 
 GRAPH
   apache2 (2.0.0)
@@ -66,7 +68,7 @@ GRAPH
   openssl (2.0.0)
     chef-sugar (>= 0.0.0)
   pacman (1.1.1)
-  pantry (0.3.5)
+  pantry (0.3.6)
     application (>= 0.0.0)
     application_ruby (>= 0.0.0)
     database (>= 0.0.0)
@@ -98,7 +100,7 @@ GRAPH
   ssh-util (0.6.6)
   sudo (2.7.1)
   unicorn (2.0.0)
-  users (1.7.0)
+  users (1.7.1)
   windows (1.34.6)
     chef_handler (>= 0.0.0)
   xfs (1.1.0)

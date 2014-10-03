@@ -10,5 +10,5 @@ cookbook 'ntp'
 cookbook 'postfix'
 cookbook 'ssh-util', github: 'QuickbridgeLtd/chef-ssh', branch: 'add_windows_support'
 cookbook 'sudo'
-cookbook 'rbenv'
+cookbook 'users', github: 'sethvargo-cookbooks/users'
 

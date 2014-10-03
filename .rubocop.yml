@@ -1,0 +1,18 @@
+AllCops:
+  Exclude:
+    - '**/metadata.rb'
+    - 'Vagrantfile'
+
+ClassAndModuleChildren:
+  Enabled: false
+Documentation:
+  Enabled: false
+
+CollectionMethods:
+  Enabled: false
+# Offense count: 11
+LineLength:
+  Max: 218
+Metrics/MethodLength:
+  Max: 25
+

@@ -13,7 +13,7 @@ Almost everything is done for user with selected group and username
 
 ### pantry::rubygems
 
-Adds custom rubygems repo to gem sources. Uses simple auth to connect to remote repo.
+Adds custom rubygems repo to bundle sources. Uses simple auth to connect to remote repo.
 If gem push is enabled, downloads credentials and sets RUBYGEMS_HOST.
 
 #### Attributes
@@ -28,14 +28,13 @@ Contributing
 1. Clone the repository from [Gerrit](https://gerrit.example.com/#/admin/projects/cookbooks/wonga_cookbook)
 2. Create a named feature branch with JIRA ticket (like `TD-1234_Adds_Feature_X`)
 3. Write your change
-4. Run foodcritic and rubocop tests on changed files
-5. Add section in README.md how to use your recipe
-6. Add small description in CHANGELOG.md and change metadata.rb
-7. Write [chefspec](http://docs.getchef.com/chefspec.html) and [serverspec](http://serverspec.org/resource_types.html) tests for your change (if applicable)
-8. Run eg. `rake`,`test-kitchen test -c 4`, ensuring they all pass
-9. Write [a meaningful git commit message](https://xkcd.com/1296/) including the JIRA ticket ID and a synopsis of changes if needed
-10. Run `git rebase -i`, squash your commits, retain the original Change-ID and re-run tests if you've been lone-wolfing too long
-11. Run `git review` to submit a Change Request ID and link it to JIRA
+4. Add section in README.md how to use your recipe
+5. Add small description in CHANGELOG.md and change metadata.rb
+6. Write [chefspec](http://docs.getchef.com/chefspec.html) and [serverspec](http://serverspec.org/resource_types.html) tests for your change (if applicable)
+7. Run tests eg. `rake`,`test-kitchen test -c 4`, ensuring they all pass
+8. Write [a meaningful git commit message](https://xkcd.com/1296/) including the JIRA ticket ID and a synopsis of changes if needed
+9. Run `git rebase -i`, squash your commits, retain the original Change-ID and re-run tests if you've been lone-wolfing too long
+10. Run `git review` to submit a Change Request ID and link it to JIRA
 
 License and Authors
 -------------------

@@ -1,8 +1,6 @@
-require 'spec_helper'
-
 RSpec.describe 'pantry::rubygems' do
   let(:chef_run) do
-    ChefSpec::Runner.new do |node|
+    ChefSpec::SoloRunner.new do |node|
       node.set['pantry']['rubygems']['username'] = username
       node.set['pantry']['rubygems']['password'] = password
       node.set['pantry']['rubygems']['rubygems_host'] = 'https://other-rubygems.org'
@@ -15,23 +13,19 @@ RSpec.describe 'pantry::rubygems' do
   let(:password) { nil }
   let(:set_push_credentials) { false }
 
-  it 'adds gem source' do
-    expect(chef_run).to run_bash('Add gem source').with(code: 'gem sources -a https://other-rubygems.org/')
-  end
-
   context 'when username and password are sets' do
     let(:username) { 'username' }
     let(:password) { 'password' }
 
     it 'adds gem source with username and password' do
-      expect(chef_run).to run_bash('Add gem source').with(code: 'gem sources -a https://username:password@other-rubygems.org/')
+      expect(chef_run).to run_bash('Add gem source').with(code: 'bundle config https://other-rubygems.org/ username:password')
     end
 
     context 'when push is allowed' do
       let(:set_push_credentials) { true }
 
       it 'sets ENV variable' do
-        expect(chef_run).to create_template('/etc/profile.d/rubygems.sh').with(variables: {host: 'https://other-rubygems.org'})
+        expect(chef_run).to create_template('/etc/profile.d/rubygems.sh').with(variables: { host: 'https://other-rubygems.org' })
       end
 
       it 'gets credentials' do

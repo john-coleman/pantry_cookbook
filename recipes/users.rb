@@ -11,7 +11,7 @@ if node['authorization']['groups']
   node['authorization']['groups'].each do |group|
     users_manage group['name'] do
       group_id group['id']
-      action [ :remove, :create ]
+      action [:remove, :create]
     end
   end
 end

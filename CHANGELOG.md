@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of pantry cookbook.
 
+## 0.4.0
+* Fixed recipe for installing gems from custom source
+* Fixed all failing tests, rubocop and foodcritic warnings
+
 ## 0.3.6
 * Added rbenv
 * Save credentials for gem source

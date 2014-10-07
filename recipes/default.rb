@@ -7,10 +7,10 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe "git"
-include_recipe "runit"
-include_recipe "passenger_apache2"
-include_recipe "pantry::database"
+include_recipe 'git'
+include_recipe 'runit'
+include_recipe 'passenger_apache2'
+include_recipe 'pantry::database'
 
 package node['pantry']['nodejs_package']
 
@@ -18,7 +18,6 @@ package node['pantry']['nodejs_package']
 deploy_user_item = data_bag_item('users', node['pantry']['user'])
 app_env = node['pantry']['app_environment']
 app_path = node['pantry']['app_path']
-app_port = node['pantry']['app_port']
 
 # Get Pantry attributes from specified data bag item if it exists or fall back to attribute
 app_data_bag_item = data_bag_item(node['pantry']['app_data_bag'], node['pantry']['app_data_bag_item'])
@@ -26,13 +25,9 @@ pantry_config = app_data_bag_item.raw_data
 
 app_revision = pantry_config['app_revision']
 
-# Get Pantry Chef credentials from specified data bag item if it exists of fall back to attributes
-chef_data_bag_item = data_bag_item(node['pantry']['chef_data_bag'], node['pantry']['chef_data_bag_item'])
-knife_data = chef_data_bag_item['chef']
-
-Chef::Log.info "#########################################"
+Chef::Log.info '#########################################'
 Chef::Log.info "DEPLOYING PANTRY REVISION #{app_revision}"
-Chef::Log.info "#########################################"
+Chef::Log.info '#########################################'
 
 # rails database sub-resource can't access node attributes directly.
 db_adapter = node['pantry']['database_adapter']
@@ -43,32 +38,32 @@ db_password = node['pantry']['database_password']
 if pantry_config['webapp']['ssl_enabled']
   file "/etc/ssl/certs/#{pantry_config['webapp']['ssl_ca_cert_name']}" do
     content pantry_config['webapp']['ssl_ca_cert']
-    owner "root"
-    group "ssl-cert"
+    owner 'root'
+    group 'ssl-cert'
     mode 0644
   end
 
-  execute "ssl_ca_cert_rehash" do
-    command "c_rehash"
+  execute 'ssl_ca_cert_rehash' do
+    command 'c_rehash'
     subscribes :create, "file[/etc/ssl/certs/#{pantry_config['webapp']['ssl_ca_cert_name']}", :immediately
   end
 
   file "/etc/ssl/certs/#{pantry_config['webapp']['ssl_cert_name']}" do
     content pantry_config['webapp']['ssl_cert']
-    owner "root"
-    group "ssl-cert"
+    owner 'root'
+    group 'ssl-cert'
     mode 0644
   end
 
   file "/etc/ssl/private/#{pantry_config['webapp']['ssl_key_name']}" do
     content pantry_config['webapp']['ssl_key']
-    owner "root"
-    group "root"
+    owner 'root'
+    group 'root'
     mode 0600
   end
 end
 
-application "pantry" do
+application 'pantry' do
   repository node['pantry']['repo']
   owner node['pantry']['user']
   group node['pantry']['group']
@@ -77,12 +72,12 @@ application "pantry" do
   environment_name app_env
   migrate node['pantry']['app_migrate']
   deploy_key deploy_user_item['ssh_private_key']
-  packages [ "libxml2-dev", "libxslt1-dev", "libmysqlclient-dev", "libcurl4-openssl-dev", "libpcre3-dev" ]
+  packages ['libxml2-dev', 'libxslt1-dev', 'libmysqlclient-dev', 'libcurl4-openssl-dev', 'libpcre3-dev']
   action :force_deploy
 
   rails do
-    precompile_assets app_env == "production"
-    gems [ "bundler", "passenger", "unicorn" ]
+    precompile_assets app_env == 'production'
+    gems %w(bundler passenger unicorn)
     database_master_role node['pantry']['database_master_role']
     database do
       adapter db_adapter
@@ -95,10 +90,10 @@ application "pantry" do
   before_migrate do
     template "#{app_path}/shared/aws.yml" do
       local true
-      source File.join(release_path,"config","aws.yml.erb")
+      source File.join(release_path, 'config', 'aws.yml.erb')
       variables(
-        :app_environment => app_env,
-        :config => pantry_config
+        app_environment: app_env,
+        config: pantry_config
       )
       owner node['pantry']['user']
       group node['pantry']['group']
@@ -106,7 +101,7 @@ application "pantry" do
       action :create
     end
 
-    Chef::Log.info "pantry :: aws.yml rendered, linking it in to this deployment revision"
+    Chef::Log.info 'pantry :: aws.yml rendered, linking it in to this deployment revision'
 
     link "#{release_path}/config/aws.yml" do
       to "#{app_path}/shared/aws.yml"
@@ -117,11 +112,11 @@ application "pantry" do
 
     template "#{app_path}/shared/pantry.yml" do
       local true
-      source File.join(release_path,"config","pantry.yml.erb")
+      source File.join(release_path, 'config', 'pantry.yml.erb')
       variables(
-        :app_environment => app_env,
-        :config => pantry_config,
-        :pantry_url => node['pantry']['pantry_url']
+        app_environment: app_env,
+        config: pantry_config,
+        pantry_url: node['pantry']['pantry_url']
       )
       owner node['pantry']['user']
       group node['pantry']['group']
@@ -129,7 +124,7 @@ application "pantry" do
       action :create
     end
 
-    Chef::Log.info "pantry :: pantry.yml rendered, linking it in to this deployment revision"
+    Chef::Log.info 'pantry :: pantry.yml rendered, linking it in to this deployment revision'
 
     link "#{release_path}/config/pantry.yml" do
       to "#{app_path}/shared/pantry.yml"
@@ -137,13 +132,13 @@ application "pantry" do
       group node['pantry']['group']
       subscribes :create, "template[#{app_path}/shared/pantry.yml]"
     end
-    
+
     template "#{app_path}/shared/newrelic.yml" do
       local true
-      source File.join(release_path,"config","newrelic.yml.erb")
+      source File.join(release_path, 'config', 'newrelic.yml.erb')
       variables(
-        :app_environment => app_env,
-        :config => pantry_config
+        app_environment: app_env,
+        config: pantry_config
       )
       owner node['pantry']['user']
       group node['pantry']['group']
@@ -151,7 +146,7 @@ application "pantry" do
       action :create
     end
 
-    Chef::Log.info "pantry :: newrelic.yml rendered, linking it in to this deployment revision"
+    Chef::Log.info 'pantry :: newrelic.yml rendered, linking it in to this deployment revision'
 
     link "#{release_path}/config/newrelic.yml" do
       to "#{app_path}/shared/newrelic.yml"
@@ -162,9 +157,9 @@ application "pantry" do
   end
 
   before_restart do
-    Chef::Log.info "#########################################"
+    Chef::Log.info '#########################################'
     Chef::Log.info "RESTARTING PANTRY REVISION #{app_revision}"
-    Chef::Log.info "#########################################"
+    Chef::Log.info '#########################################'
   end
 
   passenger_apache2 do
@@ -173,4 +168,3 @@ application "pantry" do
     params pantry_config
   end
 end
-

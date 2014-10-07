@@ -1,7 +1,7 @@
 <VirtualHost *:80>
 <% if @params[:extra]['webapp']['ssl_enabled'] %>
   ServerName <%= @params[:server_name] %>
-  ServerAlias <% @params[:server_aliases].each do |a| %><%= "#{a}" %> <% end %>
+  ServerAlias <% @params[:server_aliases].each do |a| %><%= a %> <% end %>
   DocumentRoot <%= @params[:docroot] %>
 
   RackBaseURI /
@@ -27,7 +27,7 @@
   SSLCertificateChainFile /etc/ssl/certs/<%= @params[:extra]['webapp']['ssl_ca_cert_name'] %>
 <% end %>
   ServerName <%= @params[:server_name] %>
-  ServerAlias <% @params[:server_aliases].each do |a| %><%= "#{a}" %> <% end %>
+  ServerAlias <% @params[:server_aliases].each do |a| %><%= a %> <% end %>
   DocumentRoot <%= @params[:docroot] %>
 
   RackBaseURI /

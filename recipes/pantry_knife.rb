@@ -14,9 +14,9 @@ deploy_user_item = data_bag_item('users', node['pantry']['user'])
 chef_data_bag_item = data_bag_item(node['pantry']['chef_data_bag'], node['pantry']['chef_data_bag_item'])
 knife_data = chef_data_bag_item['chef']
 
-Chef::Log.info "#########################################"
-Chef::Log.info "DEPLOYING pantry_knife"
-Chef::Log.info "#########################################"
+Chef::Log.info '#########################################'
+Chef::Log.info 'DEPLOYING pantry_knife'
+Chef::Log.info '#########################################'
 
 # Setup the knife .chef config directory
 directory "#{deploy_user_item['home']}/.chef" do
@@ -54,16 +54,15 @@ end
 
 # Set up the knife client config
 template "#{deploy_user_item['home']}/.chef/knife.rb" do
-  source "knife.rb.erb"
+  source 'knife.rb.erb'
   owner node['pantry']['user']
   group node['pantry']['group']
   mode 0640
   variables(
-    :chef_server => knife_data['chef_server'],
-    :client_name => knife_data['client_name'],
-    :validation_key => "#{deploy_user_item['home']}/.chef/#{knife_data['validation_client_name']}.pem",
-    :validation_client_name => knife_data['validation_client_name']
+    chef_server: knife_data['chef_server'],
+    client_name: knife_data['client_name'],
+    validation_key: "#{deploy_user_item['home']}/.chef/#{knife_data['validation_client_name']}.pem",
+    validation_client_name: knife_data['validation_client_name']
   )
   action :create
 end
-

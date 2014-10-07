@@ -5,7 +5,7 @@ require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec)
 
 desc 'Run tests, Foodcritic, RuboCop'
-task default: [:foodcritic, :rubocop]
+task default: [:foodcritic, :rubocop, :spec]
 
 desc 'Run Foodcritic'
 FoodCritic::Rake::LintTask.new do |t|
@@ -13,10 +13,4 @@ FoodCritic::Rake::LintTask.new do |t|
 end
 
 desc 'Run RuboCop'
-RuboCop::RakeTask.new(:rubocop) do |task|
-  # only show the files with failures
-  task.formatters = ['files']
-  # don't abort rake on failure
-  task.fail_on_error = true
-end
-
+RuboCop::RakeTask.new(:rubocop)

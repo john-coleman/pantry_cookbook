@@ -22,10 +22,12 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
   config.vm.network :forwarded_port, guest: 443, host: 8443
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", 1024]
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
   end
   config.vm.synced_folder apt_cache, "/var/cache/apt/archives/"
   config.vm.provision :shell, :inline => "ulimit -n 16048; apt-get update"
   config.vm.synced_folder pantry_path, "/home/vagrant/pantry"
+  config.ssh.forward_agent = true
   daemons_paths.each do |path|
     config.vm.synced_folder path, "/home/vagrant/#{File.basename(path)}"
   end

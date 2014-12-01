@@ -74,6 +74,7 @@ application 'pantry' do
   deploy_key deploy_user_item['ssh_private_key']
   packages ['libxml2-dev', 'libxslt1-dev', 'libmysqlclient-dev', 'libcurl4-openssl-dev', 'libpcre3-dev']
   action :force_deploy
+  migration_command 'bundle exec rake db:migrate db:seed'
 
   rails do
     precompile_assets app_env == 'production'

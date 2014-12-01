@@ -68,7 +68,7 @@ GRAPH
   openssl (2.0.0)
     chef-sugar (>= 0.0.0)
   pacman (1.1.1)
-  pantry (0.4.0)
+  pantry (0.4.1)
     application (>= 0.0.0)
     application_ruby (>= 0.0.0)
     database (>= 0.0.0)

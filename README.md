@@ -38,10 +38,10 @@ Contributing
 
 License and Authors
 -------------------
-Authors:
-Pantry Team <pantry@example.com>
-Alex Slynko <pantry@example.com>
-Clive Foley <clive.foley@example.com>
-John Coleman <john.coleman@example.com>
-Justin Connell <justin.connell@example.com>
-Kieran Manning <kieran.manning@example.com>
+* Author: Pantry Team (<pantry@example.com>)
+* Author: Aleksey Dragan (<aleksey.dragan@example.com>)
+* Author: Alex Slynko (<pantry@example.com>)
+* Author: John Coleman (<john.coleman@example.com>)
+* Author: Justin Connell (<justin.connell@example.com>)
+* Author: Kieran Manning (<kieran.manning@example.com>)
+* Author: Riccardo Tacconi (<riccardo.tacconi@example.com>)

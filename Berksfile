@@ -1,4 +1,4 @@
-source "https://supermarket.getchef.com"
+source 'https://supermarket.chef.io'
 
 metadata
 cookbook 'apt'
@@ -11,4 +11,3 @@ cookbook 'postfix'
 cookbook 'ssh-util', github: 'QuickbridgeLtd/chef-ssh', branch: 'add_windows_support'
 cookbook 'sudo'
 cookbook 'users', github: 'sethvargo-cookbooks/users'
-

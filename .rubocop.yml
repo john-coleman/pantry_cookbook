@@ -10,9 +10,8 @@ Documentation:
 
 CollectionMethods:
   Enabled: false
-# Offense count: 11
 LineLength:
-  Max: 218
+  Max: 160
 Metrics/MethodLength:
   Max: 25
 

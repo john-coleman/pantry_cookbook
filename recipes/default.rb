@@ -95,7 +95,7 @@ application 'pantry' do
 
       template shared_name do
         local true
-        source template
+        source template_name
         variables(
           app_environment: app_env,
           config: pantry_config,

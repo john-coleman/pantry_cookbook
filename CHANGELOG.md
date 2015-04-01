@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of pantry cookbook.
 
+## 0.4.4
+* Fixed default recipe
+
 ## 0.4.3
 * Added test kitchen
 

@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of pantry cookbook.
 
+## 0.4.5
+* Added support for service --status-all
+
 ## 0.4.4
 * Fixed default recipe
 

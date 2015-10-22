@@ -44,7 +44,7 @@ file "#{deploy_user_item['home']}/.chef/#{knife_data['validation_client_name']}.
 end
 
 # Set up the SSH key
-file "#{deploy_user_item['home']}/.ssh/aws-ssh-keypair.pem" do
+file "#{deploy_user_item['home']}/.ssh/#{node['pantry']['ssh_key_name']}" do
   owner node['pantry']['user']
   group node['pantry']['group']
   mode 0600

@@ -25,7 +25,7 @@ If gem push is enabled, downloads credentials and sets RUBYGEMS_HOST.
 
 Contributing
 ------------
-1. Clone the repository from [Gerrit](https://gerrit.example.com/#/admin/projects/cookbooks/wonga_cookbook)
+1. Clone the repository from [Github](https://github.com/wongatech/wonga_pantry_cookbook)
 2. Create a named feature branch with JIRA ticket (like `TD-1234_Adds_Feature_X`)
 3. Write your change
 4. Add section in README.md how to use your recipe
@@ -38,10 +38,10 @@ Contributing
 
 License and Authors
 -------------------
-* Author: Pantry Team (<pantry@example.com>)
-* Author: Aleksey Dragan (<aleksey.dragan@example.com>)
-* Author: Alex Slynko (<pantry@example.com>)
-* Author: John Coleman (<john.coleman@example.com>)
-* Author: Justin Connell (<justin.connell@example.com>)
-* Author: Kieran Manning (<kieran.manning@example.com>)
-* Author: Riccardo Tacconi (<riccardo.tacconi@example.com>)
+* Author: Pantry Team (<pantry@wonga.com>)
+* Author: Aleksey Dragan (<aleksey.dragan@wonga.com>)
+* Author: Alex Slynko (<alex.slynko@wonga.com>)
+* Author: John Coleman (<john.coleman@wonga.com>)
+* Author: Justin Connell (<justin.connell@wonga.com>)
+* Author: Kieran Manning (<kieran.manning@wonga.com>)
+* Author: Riccardo Tacconi (<riccardo.tacconi@wonga.com>)
